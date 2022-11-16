@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Rank {
+  species
+  genus
+  family
+  order
+}
+
+enum Gender {
+  female
+  male
+  unknown
+}
+
+model Taxonomy {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  englishName  String? // only species can have it.
+  taxonomyName String // It is a must. It should container binomial name.
+  rank         Rank
+  parent       String?
+  isApproved   Boolean
+  username     String
+  slug         String?
+  image        String?
+  info         String
+  sex          Gender?
+  ancestors    String[]
+  credit       String
+}
